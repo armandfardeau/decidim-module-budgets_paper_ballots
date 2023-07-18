@@ -6,7 +6,10 @@ module Decidim
       extend ActiveSupport::Concern
 
       included do
-        has_many :paper_ballot_results, foreign_key: "decidim_project_id", class_name: "Decidim::BudgetsPaperBallots::PaperBallotResult"
+        has_many :paper_ballot_results,
+                 foreign_key: "decidim_project_id",
+                 class_name: "Decidim::BudgetsPaperBallots::PaperBallotResult",
+                 dependent: :destroy
       end
 
       # Public: Returns the number of paper votes for a specific project

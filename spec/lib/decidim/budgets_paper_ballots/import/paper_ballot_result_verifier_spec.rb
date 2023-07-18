@@ -5,7 +5,7 @@ require "spec_helper"
 describe Decidim::BudgetsPaperBallots::Import::PaperBallotResultVerifier do
   subject do
     described_class.new(
-      headers: ["id", "paper_ballots_to_import"],
+      headers: %w(id paper_ballots_to_import),
       data: data,
       reader: Decidim::Admin::Import::Readers::XLSX,
       context: nil

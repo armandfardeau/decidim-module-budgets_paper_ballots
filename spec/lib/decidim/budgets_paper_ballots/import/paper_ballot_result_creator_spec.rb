@@ -35,9 +35,9 @@ describe Decidim::BudgetsPaperBallots::Import::PaperBallotResultCreator do
   describe "#resource_attributes" do
     it "returns the attributes hash" do
       expect(subject.resource_attributes).to eq(
-                                               id: data[:id],
-                                               paper_ballots_to_import: data[:paper_ballots_to_import]
-                                             )
+        id: data[:id],
+        paper_ballots_to_import: data[:paper_ballots_to_import]
+      )
     end
   end
 

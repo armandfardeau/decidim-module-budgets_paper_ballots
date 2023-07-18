@@ -15,14 +15,15 @@ DECIDIM_VERSION = Decidim::BudgetsPaperBallots::DECIDIM_VERSION
 gem "decidim", DECIDIM_VERSION
 gem "decidim-budgets_paper_ballots", path: "."
 
-gem "puma", ">= 5.5.1"
 gem "bootsnap", "~> 1.4"
+gem "puma", ">= 5.5.1"
 gem "uglifier", "~> 4.1"
 
 group :development, :test do
   gem "byebug", "~> 11.0", platform: :mri
 
   gem "decidim-dev", DECIDIM_VERSION
+  gem "rubocop-faker"
 end
 
 group :development do

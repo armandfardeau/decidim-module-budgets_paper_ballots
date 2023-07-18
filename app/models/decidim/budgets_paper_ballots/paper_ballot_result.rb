@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Decidim
   module BudgetsPaperBallots
     # The data store for a paper ballot result in the Budget resource.

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
 module Decidim
   module Budgets
@@ -13,124 +13,106 @@ module Decidim
       let(:serialized) { subject.run }
       let(:attachment) { create :attachment, attached_to: project }
       let(:proposals_component) do
-        create(:component, manifest_name: 'proposals', participatory_space: project.participatory_space)
+        create(:component, manifest_name: "proposals", participatory_space: project.participatory_space)
       end
       let(:proposals) { create_list(:proposal, 3, component: proposals_component) }
       let!(:paper_ballot_result) { create :paper_ballot_result, project: project, votes: 10 }
 
-      describe '#serializer' do
-        before { project.link_resources(proposals, 'included_proposals') }
+      describe "#serializer" do
+        before { project.link_resources(proposals, "included_proposals") }
 
-        it 'includes the keys' do
-          expect(serialized.keys).to eq(%i[id
-                                           category
-                                           scope
-                                           participatory_space
-                                           component
-                                           title
-                                           description
-                                           budget
-                                           budget_amount
-                                           confirmed_votes
-                                           paper_ballots
-                                           total_votes
-                                           comments
-                                           created_at
-                                           url
-                                           related_proposals
-                                           related_proposal_titles
-                                           related_proposal_urls
-                                           test_field])
+        it "includes the keys" do
+          expect(serialized.keys).to eq([:id, :category, :scope, :participatory_space, :component, :title, :description, :budget, :budget_amount, :confirmed_votes, :paper_ballots, :total_votes, :comments, :created_at, :url, :related_proposals, :related_proposal_titles, :related_proposal_urls, :test_field])
         end
 
-        it 'includes the id' do
+        it "includes the id" do
           expect(serialized).to include(id: project.id)
         end
 
-        it 'includes the category' do
+        it "includes the category" do
           expect(serialized[:category]).to include(id: category.id)
           expect(serialized[:category]).to include(name: category.name)
         end
 
-        it 'includes the scope' do
+        it "includes the scope" do
           expect(serialized[:scope]).to include(id: project.scope.id)
           expect(serialized[:scope]).to include(name: project.scope.name)
         end
 
-        it 'includes the participatory space' do
+        it "includes the participatory space" do
           expect(serialized[:participatory_space]).to include(id: project.budget.component.participatory_space.id)
           expect(serialized[:participatory_space]).to include(url: Decidim::ResourceLocatorPresenter.new(project.participatory_space).url)
         end
 
-        it 'includes the component' do
+        it "includes the component" do
           expect(serialized[:component]).to include(id: project.component.id)
         end
 
-        it 'includes the title' do
+        it "includes the title" do
           expect(serialized[:title]).to include(project.title)
         end
 
-        it 'includes the description' do
+        it "includes the description" do
           expect(serialized[:description]).to include(project.description)
         end
 
-        it 'includes the budget id' do
+        it "includes the budget id" do
           expect(serialized[:budget]).to eq(id: project.budget.id)
         end
 
-        it 'includes the budget amount' do
+        it "includes the budget amount" do
           expect(serialized[:budget_amount]).to eq(project.budget_amount)
         end
 
-        it 'includes count of confirmed votes' do
+        it "includes count of confirmed votes" do
           expect(serialized[:confirmed_votes]).to eq(project.confirmed_orders_count)
         end
 
-        it 'includes count of paper ballots' do
+        it "includes count of paper ballots" do
           expect(serialized[:paper_ballots]).to eq(project.paper_ballots)
         end
 
-        it 'includes count of total votes' do
+        it "includes count of total votes" do
           expect(serialized[:total_votes]).to eq(project.total_votes)
         end
 
-        it 'includes comment count' do
+        it "includes comment count" do
           expect(serialized[:comments]).to eq(project.comments.count)
         end
 
-        it 'includes the created at' do
+        it "includes the created at" do
           expect(serialized).to include(created_at: project.created_at)
         end
 
-        it 'includes the url' do
+        it "includes the url" do
           expect(serialized[:url]).to eq(project.polymorphic_resource_url({}))
         end
 
-        it 'includes related proposal ids' do
+        it "includes related proposal ids" do
           expect(serialized[:related_proposals]).to match_array(project.linked_resources(:proposals,
-                                                                                         'included_proposals').map(&:id))
+                                                                                         "included_proposals").map(&:id))
         end
 
-        it 'includes related proposal titles' do
-          expect(serialized[:related_proposal_titles]).to include(proposals.first.title['en'])
-          expect(serialized[:related_proposal_titles]).to include(proposals.second.title['en'])
-          expect(serialized[:related_proposal_titles]).to include(proposals.last.title['en'])
+        it "includes related proposal titles" do
+          expect(serialized[:related_proposal_titles]).to include(proposals.first.title["en"])
+          expect(serialized[:related_proposal_titles]).to include(proposals.second.title["en"])
+          expect(serialized[:related_proposal_titles]).to include(proposals.last.title["en"])
         end
 
-        it 'includes related proposal urls' do
+        it "includes related proposal urls" do
           expect(serialized[:related_proposal_urls]).to include(Decidim::ResourceLocatorPresenter.new(proposals.first).url)
           expect(serialized[:related_proposal_urls]).to include(Decidim::ResourceLocatorPresenter.new(proposals.second).url)
           expect(serialized[:related_proposal_urls]).to include(Decidim::ResourceLocatorPresenter.new(proposals.last).url)
         end
       end
 
-      context 'when subscribed to the serialize event' do
-        ActiveSupport::Notifications.subscribe('decidim.serialize.budgets.project_serializer') do |_event_name, data|
+      context "when subscribed to the serialize event" do
+        ActiveSupport::Notifications.subscribe("decidim.serialize.budgets.project_serializer") do |_event_name, data|
           data[:serialized_data][:test_field] = "Resource class: #{data[:resource].class}"
         end
 
-        it 'includes new field' do
-          expect(serialized[:test_field]).to eq('Resource class: Decidim::Budgets::Project')
+        it "includes new field" do
+          expect(serialized[:test_field]).to eq("Resource class: Decidim::Budgets::Project")
         end
       end
     end
