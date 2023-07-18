@@ -17,9 +17,6 @@ module Decidim
           Decidim::BudgetsPaperBallots::Import::PaperBallotResultVerifier
         end
 
-        # TODO: see if we can instantiate from data directly
-        # Produces a paper ballot result from parsed data
-        #
         # Returns a paper ballot result
         def produce
           resource
