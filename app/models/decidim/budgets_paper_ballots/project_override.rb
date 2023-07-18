@@ -16,7 +16,7 @@ module Decidim
 
       # Public: Returns the number of times a specific project has been selected through both online and paper votes.
       def total_votes
-        confirmed_orders_count() + paper_ballots()
+        confirmed_orders_count + paper_ballots
       end
     end
   end
