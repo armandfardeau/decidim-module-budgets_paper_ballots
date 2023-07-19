@@ -16,7 +16,6 @@ def seed_db(path)
   end
 end
 
-
 # fix: https://github.com/decidim/decidim/blob/f2360320143222a53858f9d7a8bbddc9cad218aa/babel.config.json
 def fix_babel_configs(path)
   Dir.chdir(path) do
