@@ -101,5 +101,4 @@ task :development_app do
   install_module("development_app")
   seed_db("development_app")
   fix_babel_configs("development_app")
-
 end
