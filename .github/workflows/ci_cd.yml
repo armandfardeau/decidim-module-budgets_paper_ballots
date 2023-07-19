@@ -1,10 +1,6 @@
 name: "[CI/CD]"
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
+on: [push]
 
 env:
   NODE_VERSION: 16.9.1
